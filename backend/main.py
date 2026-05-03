@@ -151,7 +151,8 @@ async def delete_user_by_admin(user_id: int, db: Session = Depends(get_db), curr
     user_to_delete = db.query(User).filter(User.id == user_id).first()
     if not user_to_delete:
         raise HTTPException(status_code=404, detail="ไม่พบผู้ใช้งานที่ต้องการลบ")
-        
+
+    db.query(Task).filter(Task.user_id == user_id).delete()
     db.delete(user_to_delete)
     db.commit()
     return {"msg": "ลบผู้ใช้งานเรียบร้อยแล้ว"}
