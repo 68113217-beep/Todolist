@@ -448,6 +448,11 @@ function switchTab(tabId) {
     
     if (tabId === 'my-tasks') fetchTasks();
     if (tabId === 'calendar') loadCalendarTasks();
+
+    // Update mobile nav active state
+    document.querySelectorAll('#mobile-nav button').forEach(b => b.classList.remove('active'));
+    const mobMap = {'my-tasks': 'mob-tab-tasks', 'add-task': 'mob-tab-add', 'profile': 'mob-tab-profile', 'admin-panel': 'mob-tab-admin'};
+    if (mobMap[tabName]) document.getElementById(mobMap[tabName])?.classList.add('active');
 }
 
 async function updateTask() {
@@ -605,7 +610,10 @@ async function fetchUsers() {
                             </div>
                         </td>
                         <td class="px-8 py-5 text-right">
-                            <button onclick="deleteUser(${user.id})" class="p-2 text-gray-300 hover:text-red-500 transition-all">
+                            <button onclick="changeRole(${user.id}, '${user.role}')" class="p-2 text-gray-300 hover:text-blue-500 transition-all" title="เปลี่ยน Role">
+                                <span class="material-symbols-outlined text-lg">swap_horiz</span>
+                            </button>
+                            <button onclick="deleteUser(${user.id})" class="p-2 text-gray-300 hover:text-red-500 transition-all" title="ลบผู้ใช้">
                                 <span class="material-symbols-outlined text-lg">delete</span>
                             </button>
                         </td>
@@ -627,6 +635,20 @@ function filterUsers() {
         const textContent = tr[i].textContent.toLowerCase();
         tr[i].style.display = textContent.includes(filter) ? "" : "none";
     }
+}
+
+async function changeRole(id, currentRole) {
+    const newRole = currentRole === 'admin' ? 'user' : 'admin';
+    if (!confirm(`เปลี่ยน role เป็น "${newRole}" ใช่ไหม?`)) return;
+    try {
+        const res = await fetch(`${API_URL}/admin/users/${id}/role`, {
+            method: 'PUT',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ role: newRole })
+        });
+        if (res.ok) { alert('เปลี่ยน role สำเร็จ'); fetchUsers(); }
+        else { const e = await res.json(); alert('ผิดพลาด: ' + (e.detail || e.msg)); }
+    } catch (err) { alert('เชื่อมต่อไม่ได้'); }
 }
 
 // ฟังก์ชันลบผู้ใช้งาน (สำหรับ Admin เท่านั้น)

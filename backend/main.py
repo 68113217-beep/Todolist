@@ -144,14 +144,15 @@ async def get_all_users(db: Session = Depends(get_db), current_user: User = Depe
 
 @app.delete("/api/admin/users/{user_id}")
 async def delete_user_by_admin(user_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    # ตรวจสอบสิทธิ์ Admin[cite: 8]
+    # ตรวจสอบสิทธิ์ Admin
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="ไม่มีสิทธิ์เข้าถึง")
     
     user_to_delete = db.query(User).filter(User.id == user_id).first()
     if not user_to_delete:
         raise HTTPException(status_code=404, detail="ไม่พบผู้ใช้งานที่ต้องการลบ")
-
+    
+    db.query(Notification).filter(Notification.user_id == user_id).delete()
     db.query(Task).filter(Task.user_id == user_id).delete()
     db.delete(user_to_delete)
     db.commit()
@@ -204,6 +205,19 @@ async def mark_all_read(db: Session = Depends(get_db), current_user: User = Depe
     db.query(Notification).filter(Notification.user_id == current_user.id, Notification.is_read == False).update({"is_read": True})
     db.commit()
     return {"msg": "อ่านทั้งหมดแล้ว"}
+
+@app.put("/api/admin/users/{user_id}/role")
+async def change_user_role(user_id: int, data: dict, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="ไม่มีสิทธิ์เข้าถึง")
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="ไม่พบผู้ใช้")
+    if user.id == current_user.id:
+        raise HTTPException(status_code=400, detail="ไม่สามารถเปลี่ยน role ตัวเองได้")
+    user.role = "admin" if user.role == "user" else "user"
+    db.commit()
+    return {"msg": f"เปลี่ยน role เป็น {user.role} สำเร็จ", "new_role": user.role}
 
 if __name__ == "__main__":
     import uvicorn

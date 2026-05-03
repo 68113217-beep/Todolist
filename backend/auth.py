@@ -5,7 +5,7 @@ from jose import JWTError, jwt
 import bcrypt
 from datetime import datetime, timedelta
 from backend.database import get_db
-from backend.models import User, Notification
+from backend.models import User, Notification,Task
 
 # ตั้งค่าสำหรับการเข้ารหัส
 SECRET_KEY = "super-secret-key-todolist-1234"
@@ -109,6 +109,8 @@ async def update_profile(data: dict, db: Session = Depends(get_db), current_user
 
 @auth_router.delete("/profile")
 async def delete_profile(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    db.query(Notification).filter(Notification.user_id == current_user.id).delete()
+    db.query(Task).filter(Task.user_id == current_user.id).delete()
     db.delete(current_user)
     db.commit()
     return {"msg": "ลบบัญชีเรียบร้อยแล้ว"}
