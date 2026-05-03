@@ -71,7 +71,7 @@ async def register(data: dict, db: Session = Depends(get_db)):
 @auth_router.post("/login")
 async def login(data: dict, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == data['email']).first()
-    if not user or not verify_password.verify(data['password'], user.password_hash):
+    if not user or not verify_password(data['password'], user.password_hash):
         raise HTTPException(status_code=401, detail="อีเมลหรือรหัสผ่านไม่ถูกต้อง")
     
     access_token = create_access_token(data={"sub": str(user.id)})
