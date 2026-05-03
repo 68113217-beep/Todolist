@@ -1,4 +1,4 @@
-const API_URL = 'http://127.0.0.1:8000/api';
+const API_URL = 'https://todolist-au7k.onrender.com/api';
 let currentAvatarBase64 = null;
 
 window.onload = () => {
