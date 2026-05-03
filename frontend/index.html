@@ -409,6 +409,29 @@
         </table>
     </div>
 </div>
+            <!-- Mobile Bottom Navigation -->
+            <nav id="mobile-nav">
+                <button onclick="switchTab('my-tasks')" id="mob-tab-tasks">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>งานของฉัน</span>
+                </button>
+                <button onclick="editingTaskId=null; switchTab('add-task')" id="mob-tab-add">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <span>เพิ่มงาน</span>
+                </button>
+                <button onclick="switchTab('profile')" id="mob-tab-profile">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span>โปรไฟล์</span>
+                </button>
+                <button onclick="switchTab('admin-panel')" id="mob-tab-admin" class="hidden">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span>Admin</span>
+                </button>
+                <button onclick="handleLogout()">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>ออก</span>
+                </button>
+            </nav>
             
         </main>
     </div>
