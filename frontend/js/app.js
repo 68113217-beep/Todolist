@@ -16,7 +16,7 @@ async function handleRegister() {
     const username = document.getElementById('reg-username').value;
     const email = document.getElementById('reg-email').value;
     const password = document.getElementById('reg-password').value;
-    const role = document.getElementById('reg-role').value;
+    const role = 'user';
     const msgDiv = document.getElementById('register-msg');
 
     // ✅ ล้างค่าเก่าและซ่อนไว้ก่อนเริ่มทำงานใหม่
