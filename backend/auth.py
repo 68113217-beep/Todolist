@@ -51,7 +51,7 @@ async def register(data: dict, db: Session = Depends(get_db)):
     new_user = User(
         username=data['username'],
         email=data['email'],
-        password_hash=pwd_context.hash(data['password']),
+        password_hash=hash_password(data['password']),
         role=data.get('role', 'user')
     )
     db.add(new_user)
@@ -71,7 +71,7 @@ async def register(data: dict, db: Session = Depends(get_db)):
 @auth_router.post("/login")
 async def login(data: dict, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == data['email']).first()
-    if not user or not pwd_context.verify(data['password'], user.password_hash):
+    if not user or not verify_password.verify(data['password'], user.password_hash):
         raise HTTPException(status_code=401, detail="อีเมลหรือรหัสผ่านไม่ถูกต้อง")
     
     access_token = create_access_token(data={"sub": str(user.id)})
@@ -96,8 +96,7 @@ async def update_profile(data: dict, db: Session = Depends(get_db), current_user
     if 'department' in data: current_user.department = data['department']
     if 'avatar_url' in data: current_user.avatar_url = data['avatar_url']
     if 'new_password' in data and data['new_password']:
-        hashed = pwd_context.hash(data['new_password'])
-        current_user.password_hash = hashed
+        current_user.password_hash = hash_password(data['new_password'])
         db.flush()  # บังคับเขียน password_hash ลง DB ทันที
         
     db.commit()
