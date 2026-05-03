@@ -3,7 +3,17 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from backend.database import engine, get_db
 from backend.models import Base, Task, User, Notification
-from backend.auth import auth_router, get_current_user # อย่าลืมแก้ auth.py ด้วยนะครับ
+from backend.auth import auth_router, get_current_user 
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+# เชื่อมโฟลเดอร์ frontend
+app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
+
+# สั่งให้หน้าแรกไปเปิด index.html
+@app.get("/")
+async def read_index():
+    return FileResponse("frontend/index.html")
 
 # สร้างตารางอัตโนมัติ
 Base.metadata.create_all(bind=engine)
