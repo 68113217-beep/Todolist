@@ -3,15 +3,21 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# ✅ 1. หาตำแหน่งของโฟลเดอร์ backend ปัจจุบันอัตโนมัติ
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# ✅ 2. รวมตำแหน่งเข้ากับชื่อไฟล์ เพื่อให้ได้ที่อยู่ที่ถูกต้องเป๊ะๆ
-DB_PATH = os.path.join(BASE_DIR, "todolist.db")
+# ✅ ถ้ามี DATABASE_URL (Render PostgreSQL) ใช้ PostgreSQL
+# ✅ ถ้าไม่มี (localhost) ใช้ SQLite เหมือนเดิม
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
-# ✅ 3. ใช้ที่อยู่ที่เราสร้างขึ้น (ระบุ sqlite:///)
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
+if DATABASE_URL:
+    # Render ให้ URL เป็น postgres:// แต่ SQLAlchemy ต้องการ postgresql://
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    engine = create_engine(DATABASE_URL)
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    DB_PATH = os.path.join(BASE_DIR, "todolist.db")
+    DATABASE_URL = f"sqlite:///{DB_PATH}"
+    engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=True, bind=engine)
 Base = declarative_base()
 
