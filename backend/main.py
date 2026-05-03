@@ -7,10 +7,11 @@ from backend.auth import auth_router, get_current_user
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
-# เชื่อมโฟลเดอร์ frontend
+app = FastAPI(title="To-Do-List FastAPI")
+
+# 2. ตั้งค่าหน้าแรกและการเชื่อมไฟล์ (ต้องอยู่หลัง app = FastAPI)
 app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
 
-# สั่งให้หน้าแรกไปเปิด index.html
 @app.get("/")
 async def read_index():
     return FileResponse("frontend/index.html")
@@ -28,7 +29,6 @@ with engine.connect() as conn:
         except Exception:
             pass  # คอลัมน์มีอยู่แล้ว ข้ามไป
 
-app = FastAPI(title="To-Do-List FastAPI")
 
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
