@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/frontend/css/style.css">
+    <link rel="stylesheet" href="/frontend/css/style_mobile.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 <body class="text-gray-800 bg-slate-50">
@@ -410,28 +411,29 @@
     </div>
 </div>
             <!-- Mobile Bottom Navigation -->
-            <nav id="mobile-nav">
-                <button onclick="switchTab('my-tasks')" id="mob-tab-tasks">
-                    <i class="fa-solid fa-list-check"></i>
-                    <span>งานของฉัน</span>
-                </button>
-                <button onclick="editingTaskId=null; switchTab('add-task')" id="mob-tab-add">
-                    <i class="fa-solid fa-circle-plus"></i>
-                    <span>เพิ่มงาน</span>
-                </button>
-                <button onclick="switchTab('profile')" id="mob-tab-profile">
-                    <i class="fa-solid fa-user-gear"></i>
-                    <span>โปรไฟล์</span>
-                </button>
-                <button onclick="switchTab('admin-panel')" id="mob-tab-admin" class="hidden">
-                    <i class="fa-solid fa-user-shield"></i>
-                    <span>Admin</span>
-                </button>
-                <button onclick="handleLogout()">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>ออก</span>
-                </button>
-            </nav>
+        <nav id="mobile-nav">
+            <button onclick="switchTab('my-tasks')" id="mob-tab-tasks">
+                <i class="fa-solid fa-list-check"></i>
+                <span>งานของฉัน</span>
+            </button>
+            <button onclick="editingTaskId=null; switchTab('add-task')" id="mob-tab-add">
+                <i class="fa-solid fa-circle-plus"></i>
+                <span>เพิ่มงาน</span>
+            </button>
+            <button onclick="switchTab('profile')" id="mob-tab-profile">
+                <i class="fa-solid fa-user-gear"></i>
+                <span>โปรไฟล์</span>
+            </button>
+            <button onclick="switchTab('admin-panel')" id="mob-tab-admin" class="hidden">
+                <i class="fa-solid fa-user-shield"></i>
+                <span>Admin</span>
+            </button>
+            <button onclick="handleLogout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>ออก</span>
+            </button>
+        </nav>
+
             
         </main>
     </div>
