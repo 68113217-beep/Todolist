@@ -1,0 +1,88 @@
+/* การตั้งค่าพื้นฐานของหน้าเว็บ */
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background-color: #f8fafc; 
+    color: #1e293b;
+}
+
+/* คลาสสำหรับซ่อน Element */
+.hidden { 
+    display: none !important; 
+}
+
+/* สไตล์สำหรับ Toggle Switch ในหน้า Profile[cite: 4] */
+.toggle-checkbox:checked { 
+    right: 0; 
+    border-color: #68D391; 
+}
+
+.toggle-checkbox:checked + .toggle-label { 
+    background-color: #2563EB; 
+}
+
+/* การตกแต่งเพิ่มเติมเพื่อให้หน้าตาเหมือนรูปตัวอย่าง image_4ca7fc.png */
+input[type="date"] {
+    cursor: pointer;
+}
+
+.view-section {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ตกแต่งปุ่มลบในหน้า My Tasks ให้ดูเด่นขึ้น */
+#col-todo .text-red-400:hover,
+#col-inprogress .text-red-400:hover,
+#col-done .text-red-400:hover {
+    color: #ef4444;
+    text-decoration: underline;
+}
+
+/* ตกแต่ง Scrollbar ของแจ้งเตือน[cite: 4] */
+#noti-list::-webkit-scrollbar {
+    width: 5px;
+}
+#noti-list::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+/* เอฟเฟกต์การสั่นของกระดิ่งเมื่อมีข้อความใหม่ */
+.noti-shake {
+    animation: shake 0.5s infinite;
+}
+
+@keyframes shake {
+    0% { transform: rotate(0); }
+    25% { transform: rotate(10deg); }
+    75% { transform: rotate(-10deg); }
+    100% { transform: rotate(0); }
+}
+
+/* เพิ่มใน style.css */
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 transition-colors duration-300;
+  }
+  .dark body {
+    @apply bg-slate-950 text-slate-100;
+  }
+}
+
+/* ปรับแต่ง Dropdown และ Card ในโหมดมืด[cite: 4, 7] */
+.dark .bg-white {
+    background-color: #1e293b; /* slate-800 */
+}
+
+.dark .text-gray-900, .dark .text-gray-800 {
+    color: #f8fafc;
+}
+
+.dark .border-gray-200 {
+    border-color: #334155; /* slate-700 */
+}
+
