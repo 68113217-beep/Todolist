@@ -449,10 +449,6 @@ function switchTab(tabId) {
     if (tabId === 'my-tasks') fetchTasks();
     if (tabId === 'calendar') loadCalendarTasks();
 
-    // Update mobile nav active state
-    document.querySelectorAll('#mobile-nav button').forEach(b => b.classList.remove('active'));
-    const mobMap = {'my-tasks': 'mob-tab-tasks', 'add-task': 'mob-tab-add', 'profile': 'mob-tab-profile', 'admin-panel': 'mob-tab-admin'};
-    if (mobMap[tabName]) document.getElementById(mobMap[tabName])?.classList.add('active');
 }
 
 async function updateTask() {
