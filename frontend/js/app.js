@@ -371,6 +371,15 @@ function toggleNotifications() {
     }
 }
 
+// ปิด notification เมื่อคลิกข้างนอก มือถือ
+document.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('noti-dropdown');
+    const bell = e.target.closest('[onclick="toggleNotifications()"]');
+    if (!bell && dropdown && !dropdown.classList.contains('hidden')) {
+        dropdown.classList.add('hidden');
+    }
+});
+
 function toggleDarkMode() {
     const isDark = document.documentElement.classList.toggle('dark');
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
