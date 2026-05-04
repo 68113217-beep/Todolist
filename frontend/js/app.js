@@ -58,7 +58,9 @@ function showDashboard() {
     document.getElementById('main-app').classList.remove('hidden');
     
     const user = JSON.parse(localStorage.getItem('user'));
-    document.getElementById('display-username').innerText = user.username;
+    document.getElementById('display-username').innerText = user.username; //มือถือ
+    const mobAv = document.getElementById('mob-avatar');//มือถือ
+    if(mobAv) mobAv.innerText = user.username.charAt(0).toUpperCase();
     document.getElementById('display-role').innerText = user.role === 'admin' ? 'แอดมิน' : 'ผู้ใช้งาน';
     
     // เติมข้อมูลในหน้า Profile
@@ -79,15 +81,23 @@ function showDashboard() {
     // 🛡️ ส่วนควบคุมสิทธิ์ Admin (เปิด/ปิดเมนู)
     const adminTab = document.getElementById('tab-admin-panel');
     const metricsTab = document.getElementById('tab-system-metrics');
+
+    const mobAdminTab = document.getElementById('mob-tab-admin');
+    const mobMetricsTab = document.getElementById('mob-tab-metrics');
     
-    if (user.role === 'admin') {
-        adminTab.classList.remove('hidden');
-        metricsTab.classList.remove('hidden');
-        fetchSystemStats();
-    } else {
-        adminTab.classList.add('hidden');
-        metricsTab.classList.add('hidden');
-    }
+    //มือถือ
+    if (user.role === 'admin') { 
+    if(adminTab) adminTab.classList.remove('hidden');
+    if(metricsTab) metricsTab.classList.remove('hidden');
+    if(mobAdminTab) mobAdminTab.classList.remove('hidden');
+    if(mobMetricsTab) mobMetricsTab.classList.remove('hidden');
+    fetchSystemStats();
+} else {
+    if(adminTab) adminTab.classList.add('hidden');
+    if(metricsTab) metricsTab.classList.add('hidden');
+    if(mobAdminTab) mobAdminTab.classList.add('hidden');
+    if(mobMetricsTab) mobMetricsTab.classList.add('hidden');
+}
 
     fetchNotifications(); // โหลดการแจ้งเตือนทุกครั้งที่เปิด app
     switchTab('my-tasks');
@@ -448,6 +458,13 @@ function switchTab(tabId) {
     
     if (tabId === 'my-tasks') fetchTasks();
     if (tabId === 'calendar') loadCalendarTasks();
+
+    //มือถือ
+    if (tabId === 'admin-panel') fetchUsers();
+    if (tabId === 'system-metrics') fetchSystemStats();
+    document.querySelectorAll('#mobile-nav button').forEach(b => b.classList.remove('active'));
+    const mobMap = {'my-tasks':'mob-tab-tasks','add-task':'mob-tab-add','profile':'mob-tab-profile','admin-panel':'mob-tab-admin','system-metrics':'mob-tab-metrics'};
+    if (mobMap[tabId]) { const el = document.getElementById(mobMap[tabId]); if(el) el.classList.add('active'); }
 
 }
 
