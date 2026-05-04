@@ -79,6 +79,9 @@ function showDashboard() {
     // 🛡️ ส่วนควบคุมสิทธิ์ Admin (เปิด/ปิดเมนู)
     const adminTab = document.getElementById('tab-admin-panel');
     const metricsTab = document.getElementById('tab-system-metrics');
+
+    const mobAdminTab = document.getElementById('mob-tab-admin');
+    const mobMetricsTab = document.getElementById('mob-tab-metrics');
     
     if (user.role === 'admin') {
         adminTab.classList.remove('hidden');
